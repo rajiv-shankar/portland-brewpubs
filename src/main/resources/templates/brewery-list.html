@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- VIEW LAYER -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Portland Breweries</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            color: #2c5f2d;
+            margin-bottom: 30px;
+        }
+        .brewery-card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 5px solid #2c5f2d;
+        }
+        .brewery-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c5f2d;
+            margin-bottom: 10px;
+        }
+        .brewery-info {
+            color: #555;
+            margin: 5px 0;
+        }
+        .label {
+            font-weight: bold;
+            color: #666;
+        }
+        .summary {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2c5f2d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+<div class="header">
+    <h1>🍺 <span th:text="${cityName}">City</span> Craft Breweries</h1>
+</div>
+
+<div class="summary">
+    <!-- Display the total count -->
+    <h2>
+        <span th:text="${totalCount}">0</span> Breweries
+    </h2>
+    <p>Discover the best craft beer in Portland, Maine</p>
+<!--    <p>Discover the best craft beer in <span th:text="${cityName ?: 'Portland'}">City</span>, <span th:text="${stateName ?: 'Maine'}">State</span></p>-->
+
+</div>
+
+<!--
+    th:each is a loop - it repeats this div for each brewery in the list
+    Syntax: th:each="variableName : ${listFromModel}"
+    This creates a variable called "brewery" that we can use inside this div
+-->
+<div class="brewery-card" th:each="brewery : ${breweryList}">
+
+    <!-- Access properties using dot notation -->
+    <!-- ${brewery.name} calls brewery.getName() behind the scenes -->
+    <div class="brewery-name" th:text="${brewery.name}">
+        Brewery Name
+    </div>
+
+    <div class="brewery-info">
+        <span class="label">📍 Address:</span>
+        <span th:text="${brewery.address}">Address</span>
+    </div>
+
+    <div class="brewery-info">
+        <span class="label">🍺 Signature Beer:</span>
+        <span th:text="${brewery.signatureBeer}">Beer Name</span>
+    </div>
+</div>
+
+<div style="text-align: center;">
+    <a href="/" class="nav-link">← Back to Home</a>
+</div>
+</body>
+</html>

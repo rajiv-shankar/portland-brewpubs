@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> <!-- Thymeleaf namespace declaration -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Portland Brewpubs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            color: #2c5f2d;
+            margin-bottom: 30px;
+        }
+        .welcome {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .beer-icon {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .stats {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c5f2d;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <!-- Thymeleaf: ${...} → replace HTML w attributes fr model (th:action, th:field, th:each, th:if) -->
+    <h1>🍺 <span th:text="${cityName}">City</span> Brewpubs Directory</h1> <!-- replace 'cityName' with value of 'cityName' from model -->
+</div>
+
+<div class="welcome">
+
+    <div class="beer-icon">🍺</div>
+    <h2>Welcome to
+        <span th:text="${cityName}">City</span>,
+        <span th:text="${stateName}">State</span>!
+    </h2>
+    <p>Your guide to the best breweries in town.</p>
+
+    <div class="stats">
+        <div class="number" th:text="${breweryCount}">0</div>
+        <p>Local Craft Breweries</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="/breweries" style="background: #2c5f2d; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+            View All Breweries →
+        </a>
+    </div>
+
+</div>
+
+</body>
+
+</html>
