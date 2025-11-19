@@ -8,7 +8,7 @@ import org.thymeleaf.Thymeleaf;
 
 /**
  * MODEL LAYER
- * POJO (Plain Old Java Object) to represent a brewery, just holds data - no special behavior
+ * POJO (Plain Old Java Object) to represent a brewery, just holds data - no special behavior (all pojos are models but not vv)
  */
 public class Brewery {
     private String name;

@@ -43,11 +43,11 @@
         </developer>
     </developers>
 
-    <!-- SCM (Source Control Management) info; zz fill these out if hosting code in GitHub or similar -->
+    <!-- SCM (Source Control Management) info -->
     <scm>
-        <connection>scm:git:https://github.com/rajivshankar/portland-brewpubs.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:rajivshankar/portland-brewpubs.git</developerConnection>
-        <url>https://github.com/rajivshankar/portland-brewpubs</url>
+        <connection>scm:git:https://github.com/rajiv-shankar/portland-brewpubs.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:rajiv-shankar/portland-brewpubs.git</developerConnection>
+        <url>https://github.com/rajiv-shankar/portland-brewpubs</url>
     </scm>
 
     <properties>

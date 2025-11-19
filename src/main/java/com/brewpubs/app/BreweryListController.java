@@ -9,20 +9,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * CONTROLLER LAYER
- * BreweryListController manages requests to brewery list page, gets data logic from BreweryService (service layer)
+ * manages requests to /breweries page
  */
 @Controller
 public class BreweryListController {
-
     private final BreweryService breweryService;  // injected service layer to get brewery data
 
-    public BreweryListController(BreweryService breweryService) {   // constructor: dependency injection of BreweryService
+    public BreweryListController(BreweryService breweryService) {   // dependency injection via constructor
         this.breweryService = breweryService;
     }
 
     @GetMapping("/breweries")
-    public String listBreweries(Model model) {
+    public String listBreweries(Model model) {  // Model (Spring class): holds data — objects that represent app's information
 
 /*
         // ❌ PROBLEM: Creating data IN the controller i/o using a service layer (BreweryService.java)

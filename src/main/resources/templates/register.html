@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--
+VIEW LAYER - User Registration Form
+
+THYMELEAF CONCEPTS:
+- th:action="@{/register}" → Form submits to POST /register
+- th:object="${user}" → Bind form to User object from model
+- th:field="*{username}" → Bind input to user.getUsername() / user.setUsername()
+- th:if="${...}" → Conditionally display elements (error messages)
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Portland Brewpubs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .register-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            color: #2c5f2d;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #2c5f2d;
+            outline: none;
+            box-shadow: 0 0 5px rgba(44, 95, 45, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2c5f2d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1e4620;
+        }
+
+        .info-box {
+            background-color: #e8f5e9;
+            border-left: 4px solid #2c5f2d;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .nav-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .nav-link a {
+            color: #2c5f2d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-container"> <!-- register-container: Bootstrap front-end framework -->
+
+    <div class="header">
+        <h1>🍺 Join Our Community</h1>
+    </div>
+
+    <div class="info-box">
+        Register to save your favorite breweries and create a custom beer guide for Portland!
+    </div>
+
+    <!-- FORM BINDING EXPLAINED:
+    th:action="@{/register}" → Form submits POST request to /register URL
+    th:object="${user}" → Bind form to 'user' object from controller's Model
+    th:field="*{fieldName}" → Binds input to user.fieldName (calls getters/setters)
+    FLOW:
+    1. GET /register → Controller creates empty User(), adds to Model
+    2. register.html loads, form displays with empty fields
+    3. User types username and email
+    4. User clicks "Register" button
+    5. Form submits POST /register with form data
+    6. Spring automatically creates User object and sets fields from form
+    7. Controller receives User object with data already filled in
+    -->
+
+    <form th:action="@{/register}" th:object="${user}" method="POST"> <!-- Form submits to POST /register; Bind form to User object from model -->
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <!--
+            INPUT BINDING:
+            th:field="*{username}" means:
+            - Read from: user.getUsername() (displays current value if editing)
+            - Write to: user.setUsername(value) (on form submission)
+            - HTML id: Automatically set to "username"
+            - HTML name: Automatically set to "username"
+            -->
+            <input type="text"
+                   id="username"
+                   th:field="*{username}"
+                   placeholder="Choose a username"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <!--
+            INPUT BINDING for email:
+            th:field="*{email}" binds to user.getEmail() / user.setEmail()
+            -->
+            <input type="email"
+                   id="email"
+                   th:field="*{email}"
+                   placeholder="your@email.com"
+                   required>
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <button type="submit">Register Now</button>
+
+    </form>
+
+    <div class="nav-link">
+        <a href="/">← Back to Home</a>
+    </div>
+
+</div>
+
+</body>
+
+</html>
