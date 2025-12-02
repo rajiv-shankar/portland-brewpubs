@@ -1,32 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- PROJECT OBJECT MODEL (POM) file -->
+
 <!-- Root element of Maven project file -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <!-- Version of the POM model being used -->
+    <!-- Standard (only) POM model -->
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Spring Boot Parent - provides defaults -->
+    <!-- 1. PARENT Coordinates/Metadata (Spring Boot's identity) [inherits all Spring Boot's defaults and dependency management] -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.7</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from repository (not filesystem) -->
     </parent>
 
-    <!-- Basic project identifiers -->
+    <!-- 2. PROJECT Coordinates/Metadata (this project's identity) -->
     <groupId>com.brewpubs</groupId> <!-- Reverse domain name; uniquely identifies your project group -->
     <artifactId>portland-brewpubs</artifactId> <!-- The name of the artifact (output JAR or WAR) -->
     <version>0.0.1-SNAPSHOT</version> <!-- Version of your project -->
-    <packaging>jar</packaging> <!-- Optional: Type of artifact to build (jar, war, pom, etc.) -->
+
+    <!-- Packaging (type of artifact to build: jar, war, pom, etc.) (optional) -->
+    <packaging>jar</packaging>
 
     <!-- Optional project metadata -->
     <name>portland-brewpubs</name> <!-- Display name of your project -->
     <description>portland-brewpubs</description>
     <url>https://brewpubs.com/portland-brewpubs</url> <!-- Project homepage -->
 
-    <!-- Licensing information -->
+    <!-- Java version used in maven-compiler-plugin (global POM constants);
+    - Tells Spring Boot which Java version you're targeting
+    - Sets `maven.compiler.source` and `maven.compiler.target` automatically
+    - Ensures Spring Boot configures dependencies correctly
+    - **Must match IntelliJ project settings!**
+    (but optional, bc) Spring Boot’s parent (eg <version>3.3.2</>) POM already includes it (eg <java.version>17</>, this OVERRIDES it -->
+    <properties>
+        <java.version>21</java.version>
+    </properties>
+
+    <!-- Licensing -->
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -34,7 +48,7 @@
         </license>
     </licenses>
 
-    <!-- Developer info -->
+    <!-- Developer -->
     <developers>
         <developer>
             <id>rajiv</id>
@@ -43,17 +57,12 @@
         </developer>
     </developers>
 
-    <!-- SCM (Source Control Management) info -->
+    <!-- Source Control Management (SCM) -->
     <scm>
         <connection>scm:git:https://github.com/rajiv-shankar/portland-brewpubs.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:rajiv-shankar/portland-brewpubs.git</developerConnection>
         <url>https://github.com/rajiv-shankar/portland-brewpubs</url>
     </scm>
-
-    <properties>
-        <!-- Define Java version used in maven-compiler-plugin -->
-        <java.version>21</java.version>
-    </properties>
 
     <!-- ======================= PROJECT DEPENDENCIES ====================== -->
 
@@ -67,6 +76,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!-- Input Validation (Jakarta Bean Validation) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <!-- Spring Boot's default testing starter: Includes JUnit 5, Mockito, Hamcrest, and other testing libraries -->
         <dependency>
@@ -86,7 +100,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Compiler plugin to specify Java version and encoding -->
+            <!-- redundant (delete): Spring Boot's parent POM already configures this plugin
+            Compiler plugin to specify Java version and encoding &ndash;&gt;
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -97,6 +112,7 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+            -->
         </plugins>
     </build>
 

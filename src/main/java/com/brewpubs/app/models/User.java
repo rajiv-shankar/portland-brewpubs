@@ -1,13 +1,15 @@
-package com.brewpubs.app;
+package com.brewpubs.app.models;
 
 /**
  * Created by Rajiv Shankar on 11/19/25 @ 11:22 AM.
  */
 
+import jakarta.validation.constraints.*;
+
 /**
- * User model class representing a registered user.
+ * `User` model class (domain class = entity = POJO) representing a registered `user`
  *
- * PURPOSE: Hold user data that will be bound from HTML form (POJO)
+ * PURPOSE: Hold user data that will be bound from HTML form
  *
  * BINDING PROCESS:
  * 1. User fills form in register.html
@@ -17,7 +19,11 @@ package com.brewpubs.app;
  * 5. Controller receives populated User object
  */
 public class User {
+    @NotBlank(message = "Username is required")
     private String username;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
     private String email;
 
     /**

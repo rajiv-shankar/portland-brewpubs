@@ -1,9 +1,10 @@
-package com.brewpubs.app;
+package com.brewpubs.app.controllers;
 
 /**
  * Created by Rajiv Shankar on 11/14/25 @ 12:55 PM.
  */
 
+import com.brewpubs.app.services.BreweryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

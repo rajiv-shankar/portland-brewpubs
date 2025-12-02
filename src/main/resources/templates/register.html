@@ -64,6 +64,26 @@ THYMELEAF CONCEPTS:
             box-shadow: 0 0 5px rgba(44, 95, 45, 0.3);
         }
 
+        /* NEW: Style for inputs with validation errors */
+        input.is-invalid {
+            border-color: #dc3545 !important;
+            background-color: #f8d7da;
+        }
+
+        /* NEW */
+        input.is-invalid:focus {
+            box-shadow: 0 0 5px rgba(220, 53, 69, 0.3);
+        }
+
+        /* NEW: Error message styling */
+        .error-message {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: block;
+            font-weight: 500;
+        }
+
         button {
             width: 100%;
             padding: 12px;
@@ -110,7 +130,7 @@ THYMELEAF CONCEPTS:
 
 <body>
 
-<div class="register-container"> <!-- register-container: Bootstrap front-end framework -->
+<div class="register-container">
 
     <div class="header">
         <h1>🍺 Join Our Community</h1>
@@ -134,7 +154,10 @@ THYMELEAF CONCEPTS:
     7. Controller receives User object with data already filled in
     -->
 
-    <form th:action="@{/register}" th:object="${user}" method="POST"> <!-- Form submits to POST /register; Bind form to User object from model -->
+    <form th:action="@{/register}" th:object="${user}" method="POST">
+        <!-- Form submits to POST /register; Bind form to User object from model -->
+
+        <!-- USERNAME FIELD -->
         <div class="form-group">
             <label for="username">Username:</label>
             <!--
@@ -148,21 +171,34 @@ THYMELEAF CONCEPTS:
             <input type="text"
                    id="username"
                    th:field="*{username}"
-                   placeholder="Choose a username"
-                   required>
+                   th:classappend="${#fields.hasErrors('username') ? 'is-invalid' : ''}"
+                   placeholder="Choose a username"> <!--required-->
+
+            <!-- NEW: Display error message if validation failed -->
+            <span th:if="${#fields.hasErrors('username')}" class="error-message">
+                <span th:errors="*{username}">Username error</span>
+            </span>
         </div>
 
+
+        <!-- EMAIL FIELD -->
         <div class="form-group">
             <label for="email">Email Address:</label>
             <!--
             INPUT BINDING for email:
             th:field="*{email}" binds to user.getEmail() / user.setEmail()
             -->
-            <input type="email"
+            <input type="text"
                    id="email"
                    th:field="*{email}"
-                   placeholder="your@email.com"
-                   required>
+                   th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
+                   placeholder="your@email.com">  <!-- NEW: th:classappend for error styling --><!--type="email"--><!--required-->
+
+            <!-- NEW: Display error message if validation failed -->
+            <span th:if="${#fields.hasErrors('email')}" class="error-message">
+                <span th:errors="*{email}">Email error</span>
+            </span>
+
         </div>
 
         <!-- SUBMIT BUTTON -->

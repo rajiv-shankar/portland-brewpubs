@@ -1,10 +1,8 @@
-package com.brewpubs.app;
+package com.brewpubs.app.models;
 
 /**
  * Created by Rajiv Shankar on 11/14/25 @ 12:07 PM.
  */
-
-import org.thymeleaf.Thymeleaf;
 
 /**
  * MODEL LAYER
@@ -21,8 +19,10 @@ public class Brewery {
         this.signatureBeer = signatureBeer;
     }
 
-    // Getters - allow other code to read the data; No setters (we're not changing values after creation)
+    // Getters - allow other code to read the data; No setters (we're not chaTnging values after creation)
+
     // Thymeleaf uses these to access the data in templates
+
     public String getName() {
         return name;
     }
