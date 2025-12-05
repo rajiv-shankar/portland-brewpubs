@@ -42,9 +42,13 @@
         }
     </style>
 
+    <style th:replace="~{fragments/nav :: navbar-styles}"></style>
+
 </head>
 
 <body>
+
+<nav th:replace="~{fragments/nav :: navbar}"></nav>
 
 <div class="header">
     <!-- Thymeleaf: ${...} → replace HTML w attributes fr model (th:action, th:field, th:each, th:if) -->

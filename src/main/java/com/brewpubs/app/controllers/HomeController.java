@@ -32,6 +32,8 @@ public class HomeController {
     @GetMapping("/")  // manage GET requests from "/" (homepage)
     public String home(Model model) {  // Model: Spring's Model object, holds data to be rendered in the view; automatically created and supplied by Spring MVC ("invisble")
 
+        // for navigation bar
+        model.addAttribute("currentPage", "home");
         // add data to the model
         model.addAttribute("cityName", "Portland"); // key:value pair
         model.addAttribute("stateName", "Maine");

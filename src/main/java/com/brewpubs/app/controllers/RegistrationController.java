@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @Controller
 public class RegistrationController {
+
     private final BreweryService breweryService;  // injected service layer (for future use)
 
     public RegistrationController(BreweryService breweryService) {  // dependency injection via constructor
@@ -55,9 +56,15 @@ public class RegistrationController {
      */
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
+        // for navigation bar
+        model.addAttribute("currentPage", "register");
 /*
-        User user = new User();  // Create empty User object (value) for form binding
-        model.addAttribute("user", user);  // Add empty User to model with key "user"
+        // Create empty User object (value) for form binding
+        User user = new User();
+*/
+/*
+        // Add empty User to model with key "user"
+        model.addAttribute("user", user);
 */
         model.addAttribute("user", new User());
         return "register";
@@ -103,7 +110,10 @@ public class RegistrationController {
         @Valid User user,
         BindingResult bindingResult,
         Model model) {
-/*
+        // for navigation bar
+        model.addAttribute("currentPage", "register");
+
+        /*
         // At this point, 'user' object has username and email from form!
         System.out.println("✅ Registration submitted: " + user);
 

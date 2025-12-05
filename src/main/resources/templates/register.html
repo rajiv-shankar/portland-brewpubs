@@ -126,9 +126,13 @@ THYMELEAF CONCEPTS:
             text-decoration: underline;
         }
     </style>
+
+    <style th:replace="~{fragments/nav :: navbar-styles}"></style>
 </head>
 
 <body>
+
+<nav th:replace="~{fragments/nav :: navbar}"></nav>
 
 <div class="register-container">
 
@@ -141,7 +145,7 @@ THYMELEAF CONCEPTS:
     </div>
 
     <!-- FORM BINDING EXPLAINED:
-    th:action="@{/register}" → Form submits POST request to /register URL
+    th:action="@{/register}" → Form submits request to /register URL (endpoint that will handle the form submission)
     th:object="${user}" → Bind form to 'user' object from controller's Model
     th:field="*{fieldName}" → Binds input to user.fieldName (calls getters/setters)
     FLOW:
@@ -160,6 +164,7 @@ THYMELEAF CONCEPTS:
         <!-- USERNAME FIELD -->
         <div class="form-group">
             <label for="username">Username:</label>
+
             <!--
             INPUT BINDING:
             th:field="*{username}" means:
@@ -168,13 +173,15 @@ THYMELEAF CONCEPTS:
             - HTML id: Automatically set to "username"
             - HTML name: Automatically set to "username"
             -->
+
+            <!-- if `username` field has validation errors, add CSS class `is-invalid` to it -->
             <input type="text"
                    id="username"
                    th:field="*{username}"
                    th:classappend="${#fields.hasErrors('username') ? 'is-invalid' : ''}"
-                   placeholder="Choose a username"> <!--required-->
+                   placeholder="Choose a username"> <!-- removed `required`, was blocking form submission before Spring's server-side @Valid could ever run. -->
 
-            <!-- NEW: Display error message if validation failed -->
+            <!-- if `username` field has validation errors, display "Username error" message -->
             <span th:if="${#fields.hasErrors('username')}" class="error-message">
                 <span th:errors="*{username}">Username error</span>
             </span>
@@ -194,7 +201,7 @@ THYMELEAF CONCEPTS:
                    th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
                    placeholder="your@email.com">  <!-- NEW: th:classappend for error styling --><!--type="email"--><!--required-->
 
-            <!-- NEW: Display error message if validation failed -->
+            <!-- if `email` field has validation errors, display "Email error" message -->
             <span th:if="${#fields.hasErrors('email')}" class="error-message">
                 <span th:errors="*{email}">Email error</span>
             </span>

@@ -59,9 +59,14 @@
             text-decoration: underline;
         }
     </style>
+
+    <style th:replace="~{fragments/nav :: navbar-styles}"></style>
 </head>
 
 <body>
+
+<nav th:replace="~{fragments/nav :: navbar}"></nav>
+
 <div class="header">
     <h1>🍺 <span th:text="${cityName}">City</span> Craft Breweries</h1>
 </div>

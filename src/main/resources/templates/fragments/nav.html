@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<nav th:fragment="navbar" class="navbar">
+    <div class="nav-brand">
+        <a href="/">🍺 Portland Brewpubs</a>
+    </div>
+    <div class="nav-links">
+        <a th:href="@{/}" th:classappend="${currentPage == 'home' ? 'active' : ''}">Home</a>
+        <a th:href="@{/breweries}" th:classappend="${currentPage == 'breweries' ? 'active' : ''}">Breweries</a>
+        <a th:href="@{/register}" th:classappend="${currentPage == 'register' ? 'active' : ''}">Register</a>
+    </div>
+</nav>
+
+<style th:fragment="navbar-styles">
+    .navbar {
+        background-color: #2c5f2d;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .nav-brand a {
+        color: white;
+        text-decoration: none;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+    .nav-links a:hover { background-color: rgba(255,255,255,0.2); }
+    .nav-links a.active { background-color: rgba(255,255,255,0.3); }
+</style>
+</html>

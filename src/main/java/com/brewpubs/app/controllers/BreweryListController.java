@@ -65,6 +65,8 @@ public class BreweryListController {
 
         // ✅ SOLUTION: Call service, don't create data here →
 */
+        // for navigation bar
+        model.addAttribute("currentPage", "breweries");
         // Use BreweryService to get brewery data
         model.addAttribute("breweryList", breweryService.getAllBreweries());
         model.addAttribute("totalCount", breweryService.getBreweryCount());
