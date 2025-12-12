@@ -27,7 +27,7 @@
 
     <!-- Optional project metadata -->
     <name>portland-brewpubs</name> <!-- Display name of your project -->
-    <description>portland-brewpubs</description>
+    <description>Brewpubs Around Portland Maine</description>
     <url>https://brewpubs.com/portland-brewpubs</url> <!-- Project homepage -->
 
     <!-- Java version used in maven-compiler-plugin (global POM constants);
@@ -87,6 +87,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- H2 database -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope> <!-- only needed when app runs, not when compiling -->
+        </dependency>
+        <!-- MyBatis Spring Boot starter: autoconfigures MyBatis to work with Spring Boot -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>3.0.4</version>
         </dependency>
     </dependencies>
 

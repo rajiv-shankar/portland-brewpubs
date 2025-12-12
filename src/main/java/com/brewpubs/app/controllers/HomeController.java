@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     // Field declaration: "shelf" to store (reserves a spot) the dependency for use throughout this class
-    private final BreweryService breweryService;
+    private final BreweryService breweryService; // Injected Repository
 
     // Constructor: Spring calls this automatically at startup
     // No @Autowired needed – Spring auto-detects this single constructor

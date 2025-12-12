@@ -4,7 +4,15 @@ package com.brewpubs.app.models;
  * Created by Rajiv Shankar on 11/19/25 @ 11:22 AM.
  */
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+/**
+ * POJO: Plain Old Java Object, simple Java class to hold data, no special behavior,
+ * no framework dependencies, just fields, constructors, getters, setters.
+ * Also called DTO (Data Transfer Object) when
+ * used for data transfer between layers (e.g., controller to view)
+ */
 
 /**
  * `User` model class (domain class = entity = POJO) representing a registered `user`
