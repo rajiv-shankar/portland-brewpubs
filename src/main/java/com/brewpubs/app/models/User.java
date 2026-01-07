@@ -35,7 +35,7 @@ public class User {
     private String email;
 
     /**
-     * Default constructor (required by Spring for form binding)
+     * Default no-args constructor (required by Spring for form binding)
      * Spring will call this to create empty User object
      * Then set username and email from form data
      */

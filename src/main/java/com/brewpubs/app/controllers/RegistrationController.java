@@ -105,8 +105,12 @@ public class RegistrationController {
     @PostMapping("/register")
     public String processRegistration(
         // @ModelAttribute User user
-        // @Valid enforces validation: 1. Creates `User` object from form data, 2. Runs validation (@NotBlank, @Email),
-        // 3. Creates a `BindingResult` to hold any validation errors, 4. Passes both to the method
+
+        // @Valid enforces validation:
+        // 1. Creates `User` object from form data,
+        // 2. Runs validation (@NotBlank, @Email),
+        // 3. Creates a `BindingResult` to hold any validation errors,
+        // 4. Passes both to the method
         @Valid User user,
         BindingResult bindingResult,
         Model model) {

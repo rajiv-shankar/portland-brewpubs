@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <nav th:fragment="navbar" class="navbar">
     <div class="nav-brand">
@@ -8,7 +9,22 @@
     <div class="nav-links">
         <a th:href="@{/}" th:classappend="${currentPage == 'home' ? 'active' : ''}">Home</a>
         <a th:href="@{/breweries}" th:classappend="${currentPage == 'breweries' ? 'active' : ''}">Breweries</a>
-        <a th:href="@{/register}" th:classappend="${currentPage == 'register' ? 'active' : ''}">Register</a>
+
+        <!-- Show Register and Login only when NOT logged in -->
+        <span sec:authorize="!isAuthenticated()">
+            <a th:href="@{/register}" th:classappend="${currentPage == 'register' ? 'active' : ''}">Register</a>
+            <a th:href="@{/login}" th:classappend="${currentPage == 'login' ? 'active' : ''}">Login</a>
+        </span>
+
+        <!-- Show Logout only when logged in -->
+        <span sec:authorize="isAuthenticated()">
+            <span class="username">
+                Welcome, <span sec:authentication="name">User</span>!
+            </span>
+            <form th:action="@{/logout}" method="POST" style="display: inline;">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </span>
     </div>
 </nav>
 
@@ -37,5 +53,23 @@
     }
     .nav-links a:hover { background-color: rgba(255,255,255,0.2); }
     .nav-links a.active { background-color: rgba(255,255,255,0.3); }
+    .username {
+        color: #c8e6c9;
+        margin-left: 20px;
+        font-style: italic;
+    }
+    .logout-btn {
+        background-color: #c62828;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px;
+        font-size: 14px;
+    }
+    .logout-btn:hover {
+        background-color: #b71c1c;
+    }
 </style>
 </html>
