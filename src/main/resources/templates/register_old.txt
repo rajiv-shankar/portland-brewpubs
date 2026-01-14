@@ -22,26 +22,31 @@ THYMELEAF CONCEPTS:
             padding: 20px;
             background-color: #f5f5f5;
         }
+
         .register-container {
             background: white;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             text-align: center;
             color: #2c5f2d;
             margin-bottom: 30px;
         }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
             color: #333;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="password"] {
@@ -58,13 +63,18 @@ THYMELEAF CONCEPTS:
             box-shadow: 0 0 5px rgba(44, 95, 45, 0.3);
         }
 
-        /* Style for inputs with validation errors */
+        /* NEW: Style for inputs with validation errors */
         input.is-invalid {
             border-color: #dc3545 !important;
             background-color: #f8d7da;
         }
 
-        /* Error message styling */
+        /* NEW */
+        input.is-invalid:focus {
+            box-shadow: 0 0 5px rgba(220, 53, 69, 0.3);
+        }
+
+        /* NEW: Error message styling */
         .error-message {
             color: #dc3545;
             font-size: 13px;
@@ -92,9 +102,11 @@ THYMELEAF CONCEPTS:
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #1e4620;
         }
+
         .info-box {
             background-color: #e8f5e9;
             border-left: 4px solid #2c5f2d;
@@ -104,26 +116,32 @@ THYMELEAF CONCEPTS:
             font-size: 14px;
             color: #333;
         }
+
         .nav-link {
             text-align: center;
             margin-top: 20px;
         }
+
         .nav-link a {
             color: #2c5f2d;
             text-decoration: none;
             font-weight: bold;
         }
+
         .nav-link a:hover {
             text-decoration: underline;
         }
     </style>
+
     <style th:replace="~{fragments/nav :: navbar-styles}"></style>
 </head>
+
 <body>
 
 <nav th:replace="~{fragments/nav :: navbar}"></nav>
 
 <div class="register-container">
+
     <div class="header">
         <h1>🍺 Join Our Community</h1>
     </div>
@@ -211,9 +229,9 @@ THYMELEAF CONCEPTS:
                    placeholder="Your last name">
         </div>
 
-        <!-- EMAIL FIELD (optional) -->
+        <!-- EMAIL FIELD -->
         <div class="form-group">
-            <label for="email">Email (optional):</label>
+            <label for="email">Email Address:</label>
             <!--
             INPUT BINDING for email:
             th:field="*{email}" binds to user.getEmail() / user.setEmail()
@@ -223,21 +241,26 @@ THYMELEAF CONCEPTS:
                    th:field="*{email}"
                    th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
                    placeholder="your@email.com">
+                   <!-- NEW: th:classappend for error styling --><!--type="email"--><!--required-->
+
             <!-- if `email` field has validation errors, display "Email error" message -->
             <span th:if="${#fields.hasErrors('email')}" class="error-message">
                 <span th:errors="*{email}">Email error</span>
             </span>
+
         </div>
 
         <!-- SUBMIT BUTTON -->
         <button type="submit">Register Now</button>
+
     </form>
 
     <div class="nav-link">
-        <p>Already have an account? <a href="/login">Login here</a></p>
-        <p><a href="/">← Back to Home</a></p>
+        <a href="/">← Back to Home</a>
     </div>
+
 </div>
 
 </body>
+
 </html>

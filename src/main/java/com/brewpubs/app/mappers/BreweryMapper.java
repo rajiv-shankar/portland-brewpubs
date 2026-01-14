@@ -14,11 +14,8 @@ import java.util.List;
  * HOW IT WORKS:
  * 1. @Mapper tells MyBatis to implement this interface
  * 2. Each method has a SQL annotation (@Select, @Insert, etc.)
- * 3. MyBatis generates the implementation at runtime
+ * 3. MyBatis generates the implementation at runtime [creates a real class that implements BreweryMapper interface]
  * 4. #{fieldName} placeholders are replaced with Java object values
- *
- * COMPARISON TO SUPERDUPERDRIVE:
- * This is the same pattern used for UserMapper, NoteMapper, etc.
  */
 
 @Mapper  // Tells Spring + MyBatis to create implementation

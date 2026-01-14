@@ -136,6 +136,11 @@
         <span th:text="${logoutMessage}">Logged out</span>
     </div>
 
+    <!-- Success message (shown after successful registration) -->
+    <div th:if="${param.registered}" class="success-message">
+        Registration successful! Please log in with your new account.
+    </div>
+
     <!-- Test credentials box (remove in production!) -->
     <div class="test-credentials">
         <strong>Test Credentials:</strong><br>

@@ -5,7 +5,7 @@ package com.brewpubs.app.controllers;
  */
 
 import com.brewpubs.app.models.User;
-import com.brewpubs.app.services.UserService;
+import com.brewpubs.app.services.BreweryService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,13 +28,17 @@ import org.springframework.web.bind.annotation.PostMapping;
  * Model: User.java (data structure)
  */
 @Controller
-public class RegistrationController {
+public class RegistrationController_old {
 
-    private final UserService userService;
+    private final BreweryService breweryService;  // injected service layer (for future use)
 
-    public RegistrationController(UserService userService) {
-        this.userService = userService;
+    public RegistrationController_old(BreweryService breweryService) {  // dependency injection via constructor
+        this.breweryService = breweryService;
     }
+
+// Future: Will inject UserService here
+// @Autowired
+// private UserService userService;
 
     /**
      * HANDLE GET REQUEST: Show blank registration form
@@ -54,6 +58,14 @@ public class RegistrationController {
     public String showRegistrationForm(Model model) {
         // for navigation bar
         model.addAttribute("currentPage", "register");
+/*
+        // Create empty User object (value) for form binding
+        User user = new User();
+*/
+/*
+        // Add empty User to model with key "user"
+        model.addAttribute("user", user);
+*/
         model.addAttribute("user", new User());
         return "register";
     }
@@ -92,51 +104,54 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String processRegistration(
+        // @ModelAttribute User user
+
         // @Valid enforces validation:
         // 1. Creates `User` object from form data,
         // 2. Runs validation (@NotBlank, @Email),
         // 3. Creates a `BindingResult` to hold any validation errors,
         // 4. Passes both to the method
-            @Valid User user,
-            BindingResult bindingResult,
-            Model model) {
+        @Valid User user,
+        BindingResult bindingResult,
+        Model model) {
         // for navigation bar
         model.addAttribute("currentPage", "register");
 
-        // Step 1: Check for validation errors
+        /*
+        // At this point, 'user' object has username and email from form!
+        System.out.println("✅ Registration submitted: " + user);
+
+        // Add user to model so confirmation.html can display it
+        model.addAttribute("user", user);
+
+        // TO DO (Week 2): Save to database via UserService
+        // userService.saveUser(user);
+
+        // Return template name (Thymeleaf will find confirmation.html)
+        return "confirmation";
+*/
+        // Check if validation failed
         if (bindingResult.hasErrors()) {
+            // hasErrors() = true means user submitted invalid data
             // Print errors to console for debugging
             System.out.println("❌ Validation failed!");
             // captures validation errors; loop through all errors and print messages
             bindingResult.getAllErrors().forEach(error ->
                     System.out.println("  - " + error.getDefaultMessage())
             );
-        //  Return "register" to redisplay form with errors: will show user's typed values + error messages
+
+//             Return "register" to redisplay form with errors: will show user's typed values + error messages
             return "register";
         }
 
-        // Step 2: Check if username already exists
-        if (!userService.isUsernameAvailable(user.getUsername())) {
-            System.out.println("❌ Username already exists: " + user.getUsername());
-            model.addAttribute("signupError", "Username already exists. Please choose another.");
-            return "register";
-        }
+        // VALIDATION PASSED!
+        System.out.println("✅ Registration valid!");
+        System.out.println("  Username: " + user.getUsername());
+        System.out.println("  Email: " + user.getEmail());
 
-        // Step 3: Create user in database
-        try {
-            int rowsInserted = userService.createUser(user);
-            if (rowsInserted > 0) {
-                System.out.println("✅ User created successfully: " + user.getUsername());
-                System.out.println("  Email: " + user.getEmail());
-                model.addAttribute("signupSuccess", true);
-                // Redirect to login page with success message
-                return "redirect:/login?registered=true";
-            }
-        } catch (Exception e) {
-            System.out.println("❌ Error creating user: " + e.getMessage());
-            model.addAttribute("signupError", "Registration failed. Please try again.");
-        }
-
-        return "register";
+        model.addAttribute("user", user);
+        return "confirmation";
     }
 }
+
+

@@ -5,9 +5,13 @@ package com.brewpubs.app.models;
  */
 
 /**
- * MODEL LAYER
- * POJO (Plain Old Java Object) to represent a brewery, just holds data - no special behavior (all pojos are models but not vv)
+ * POJO: Plain Old Java Object, simple Java class to hold data, no special behavior,
+ * no framework dependencies, just fields, constructors, getters, setters.
+ * Also called DTO (Data Transfer Object) when
+ * used for data transfer between layers (e.g., controller to view)
+ * (all pojos are models [any class that represents domain data] but not vv)
  */
+
 
 /**
  * Brewery model - maps to BREWERIES table
