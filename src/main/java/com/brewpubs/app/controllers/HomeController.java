@@ -1,45 +1,83 @@
 package com.brewpubs.app.controllers;
 
 /**
- * Created by Rajiv Shankar on 11/13/25 @ 8:06 PM.
+ * Created by Rajiv Shankar on 11/13/25 @ 8:06 PM.
  */
 
+import com.brewpubs.app.models.User;
 import com.brewpubs.app.services.BreweryService;
+import com.brewpubs.app.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.security.Principal;
 
 /**
  * Controller: receives & processes incoming HTTP requests | returns appropriate views (HTML pages) to users |
  * key component in Spring's Model-View-Controller (MVC) architectural pattern |
  * HomeController manages requests to homepage
  */
-
-@Controller  // Spring: mark class as a web controller for handling user requests (receive & process web requests and return views)
+@Controller
 public class HomeController {
 
     // Field declaration: "shelf" to store (reserves a spot) the dependency for use throughout this class
     private final BreweryService breweryService; // Injected Repository
+    private final UserService userService;
 
-    // Constructor: Spring calls this automatically at startup
-    // No @Autowired needed – Spring auto-detects this single constructor
-    // Spring already created a BreweryService instance (due to @Service annotation on BreweryService)
-    // and passes it here as the argument — no "new BreweryService()" needed
-    public HomeController(BreweryService breweryService) {  // constructor
-        this.breweryService = breweryService;  // Spring: inject dependency
+    // Constructor injection - Spring provides both services
+    public HomeController(BreweryService breweryService, UserService userService) {
+        this.breweryService = breweryService;
+        this.userService = userService;
+        System.out.println("✅ HomeController initialized with BreweryService and UserService");
     }
 
-    @GetMapping("/")  // manage GET requests from "/" (homepage)
-    public String home(Model model) {  // Model: Spring's Model object, holds data to be rendered in the view; automatically created and supplied by Spring MVC ("invisble")
+    /**
+     * GET / - Homepage
+     *
+     * NEW: Principal parameter
+     * - If user is logged in, Principal is NOT null → principal.getName() returns username
+     * - If user is anonymous, Principal IS null → show generic greeting
+     *
+     * FLOW:
+     * 1. Check if Principal is null (anonymous user)
+     * 2. If logged in, fetch User from database by username
+     * 3. Add firstName to model for personalized greeting
+     * 4. Template uses th:if to show appropriate message
+     */
+    @GetMapping("/")
+    public String home(Model model, Principal principal) {
 
-        // add data to the model
-        model.addAttribute("cityName", "Portland"); // key:value pair
+        // Standard attributes for all users
+        model.addAttribute("cityName", "Portland");
         model.addAttribute("stateName", "Maine");
-        model.addAttribute("currentPage", "home"); // for navigation bar
-        // model.addAttribute("breweryCount", 20);
-        // dynamic: get brewery count from service layer
+        model.addAttribute("currentPage", "home");
         model.addAttribute("breweryCount", breweryService.getBreweryCount());
 
-        return "home";  // render home.html template with model data
+        // NEW: User-specific attributes
+        if (principal != null) {
+            // User is logged in
+            String username = principal.getName();
+            System.out.println("🔐 Authenticated user visiting home: " + username);
+
+            // Fetch full User object from database
+            User user = userService.getUser(username);
+
+            if (user != null && user.getFirstName() != null && !user.getFirstName().isEmpty()) {  // User has firstName
+                // User has firstName set → personalized greeting
+                model.addAttribute("userFirstName", user.getFirstName());
+                model.addAttribute("isAuthenticated", true);
+            } else {
+                // User exists but no firstName → use username
+                model.addAttribute("userFirstName", username);
+                model.addAttribute("isAuthenticated", true);
+            }
+        } else {
+            // Anonymous user
+            System.out.println("👤 Anonymous user visiting home");
+            model.addAttribute("isAuthenticated", false);
+        }
+
+        return "home";
     }
 }

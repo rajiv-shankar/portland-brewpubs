@@ -49,7 +49,6 @@ public class User {
     private String firstName;
     private String lastName;
 
-    @NotBlank(message = "Email is required")
     @Email(message = "Email must be valid")
     private String email;
 

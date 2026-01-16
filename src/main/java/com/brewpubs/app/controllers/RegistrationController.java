@@ -107,11 +107,11 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             // Print errors to console for debugging
             System.out.println("❌ Validation failed!");
-            // captures validation errors; loop through all errors and print messages
+            // capture validation errors; loop through all errors and print messages
             bindingResult.getAllErrors().forEach(error ->
                     System.out.println("  - " + error.getDefaultMessage())
             );
-        //  Return "register" to redisplay form with errors: will show user's typed values + error messages
+        //  Return "register" page to redisplay form with errors: will show user's typed values + error messages
             return "register";
         }
 

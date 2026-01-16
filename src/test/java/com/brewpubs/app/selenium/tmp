@@ -1,0 +1,35 @@
+/**
+ * Test 3: Anonymous user sees register link
+ */
+@Test
+public void testAnonymousUserSeesRegisterLink() {
+    // Navigate to homepage
+    driver.get("http://localhost:" + port + "/");
+
+    // Get page source for debugging
+    String pageSource = driver.getPageSource();
+    System.out.println("🔍 Checking for anonymous user content...");
+
+    // Method 1: Check for generic greeting (anonymous users only)
+    assertTrue(pageSource.contains("Welcome to Portland, Maine!"),
+               "Anonymous user should see generic welcome message");
+
+    // Method 2: Check that personalized greeting is NOT present
+    assertFalse(pageSource.contains("Welcome back,"),
+                "Anonymous user should NOT see personalized greeting");
+
+    // Method 3: Check for register call-to-action text
+    assertTrue(pageSource.contains("to save your favorites!"),
+               "Anonymous user should see call to register");
+
+    // Method 4: Verify register link exists
+    try {
+        WebElement registerLink = driver.findElement(By.linkText("Register"));
+        assertNotNull(registerLink, "Register link should exist");
+        System.out.println("✅ Found 'Register' link element");
+    } catch (Exception e) {
+        fail("Could not find 'Register' link: " + e.getMessage());
+    }
+
+    System.out.println("✅ Test passed: Anonymous user sees register prompt");
+}
