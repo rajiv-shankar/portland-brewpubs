@@ -1,5 +1,6 @@
 package com.brewpubs.app;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 3. @ComponentScan: Enables component scanning (finds @Controller, @Service classes)
  */
 @SpringBootApplication // @Configuration + @EnableAutoConfiguration + @ComponentScan
+@MapperScan("com.brewpubs.app.mappers")
 public class PortlandBrewpubsApplication {
     /**
      * public: method can be accessed from anywhere;

@@ -63,7 +63,6 @@ public class User {
 
     // ========== GETTERS AND SETTERS (required for @ModelAttribute binding) ==========
 
-
     public Integer getUserId() {
         return userId;
     }
