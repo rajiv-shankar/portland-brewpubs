@@ -1,12 +1,10 @@
 package com.brewpubs.app.mappers;
 
-/**
- * Created by Rajiv Shankar on 12/10/25 @ 2:58 PM.
- */
-
 import com.brewpubs.app.models.Brewery;
 import org.apache.ibatis.annotations.*;
 import java.util.List;
+
+// ––––– Created by Rajiv Shankar on 12/10/25 @ 2:58 PM ––––– //
 
 /**
  * BreweryMapper - MyBatis interface for BREWERIES table operations

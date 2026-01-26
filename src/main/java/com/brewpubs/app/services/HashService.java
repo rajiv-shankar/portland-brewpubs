@@ -1,9 +1,5 @@
 package com.brewpubs.app.services;
 
-/**
- * Created by Rajiv Shankar on 1/9/26 @ 3:49 PM.
- */
-
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKeyFactory;
@@ -13,6 +9,8 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+
+// ––––– Created by Rajiv Shankar on 1/9/26 @ 3:49 PM ––––– //
 
 /**
  * HashService - Password hashing with salt

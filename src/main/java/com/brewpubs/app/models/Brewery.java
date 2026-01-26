@@ -1,8 +1,6 @@
 package com.brewpubs.app.models;
 
-/**
- * Created by Rajiv Shankar on 11/14/25 @ 12:07 PM.
- */
+// ––––– Created by Rajiv Shankar on 11/14/25 @ 12:07 PM ––––– //
 
 /**
  * POJO: Plain Old Java Object, simple Java class to hold data, no special behavior,

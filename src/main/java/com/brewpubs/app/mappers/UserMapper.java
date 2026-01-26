@@ -1,11 +1,9 @@
 package com.brewpubs.app.mappers;
 
-/**
- * Created by Rajiv Shankar on 1/9/26 @ 1:10 PM.
- */
-
 import com.brewpubs.app.models.User;
 import org.apache.ibatis.annotations.*;
+
+// ––––– Created by Rajiv Shankar on 1/9/26 @ 1:10 PM ––––– //
 
 /**
  * UserMapper - MyBatis interface for USERS table operations*

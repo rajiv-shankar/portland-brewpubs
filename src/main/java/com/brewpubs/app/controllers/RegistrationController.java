@@ -1,9 +1,5 @@
 package com.brewpubs.app.controllers;
 
-/**
- * Created by Rajiv Shankar on 11/19/25 @ 2:20 PM.
- */
-
 import com.brewpubs.app.models.User;
 import com.brewpubs.app.services.UserService;
 import jakarta.validation.Valid;
@@ -12,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+// ––––– Created by Rajiv Shankar on 11/19/25 @ 2:20 PM ––––– //
 
 /**
  * Controller for user registration.

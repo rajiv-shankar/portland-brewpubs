@@ -1,8 +1,6 @@
 package com.brewpubs.app.models;
 
-/**
- * Created by Rajiv Shankar on 11/19/25 @ 11:22 AM.
- */
+// ––––– Created by Rajiv Shankar on 11/19/25 @ 11:22 AM ––––– //
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

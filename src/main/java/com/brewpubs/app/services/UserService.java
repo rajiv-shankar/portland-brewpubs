@@ -1,12 +1,10 @@
 package com.brewpubs.app.services;
 
-/**
- * Created by Rajiv Shankar on 1/9/26 @ 4:10 PM.
- */
-
 import com.brewpubs.app.mappers.UserMapper;
 import com.brewpubs.app.models.User;
 import org.springframework.stereotype.Service;
+
+// ––––– Created by Rajiv Shankar on 1/9/26 @ 4:10 PM ––––– //
 
 /**
  * UserService - Business logic for user operations

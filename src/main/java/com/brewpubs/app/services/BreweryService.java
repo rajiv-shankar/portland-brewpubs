@@ -1,14 +1,12 @@
 package com.brewpubs.app.services;
 
-/**
- * Created by Rajiv Shankar on 11/14/25 @ 5:41 PM.
- */
-
 import com.brewpubs.app.mappers.BreweryMapper;
 import com.brewpubs.app.models.Brewery;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+
+// ––––– Created by Rajiv Shankar on 11/14/25 @ 5:41 PM ––––– //
 
 /**
  * SERVICE LAYER

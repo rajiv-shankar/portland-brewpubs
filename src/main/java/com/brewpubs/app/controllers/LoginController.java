@@ -1,13 +1,11 @@
 package com.brewpubs.app.controllers;
 
-/**
- * Created by Rajiv Shankar on 1/7/26 @ 3:18 PM.
- */
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+// ––––– Created by Rajiv Shankar on 1/7/26 @ 3:18 PM ––––– //
 
 /**
  * LoginController - Handles login page display

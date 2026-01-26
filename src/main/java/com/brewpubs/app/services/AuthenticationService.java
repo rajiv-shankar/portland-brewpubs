@@ -1,9 +1,5 @@
 package com.brewpubs.app.services;
 
-/**
- * Created by Rajiv Shankar on 1/9/26 @ 4:26 PM.
- */
-
 import com.brewpubs.app.mappers.UserMapper;
 import com.brewpubs.app.models.User;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,6 +10,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+
+// ––––– Created by Rajiv Shankar on 1/9/26 @ 4:26 PM ––––– //
 
 /**
  * AuthenticationService - Custom AuthenticationProvider for Spring Security

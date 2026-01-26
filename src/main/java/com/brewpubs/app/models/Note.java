@@ -1,8 +1,6 @@
 package com.brewpubs.app.models;
 
-/**
- * Created by Rajiv Shankar on 1/21/26 @ 3:01 PM.
- */
+// ––––– Created by Rajiv Shankar on 1/21/26 @ 3:01 PM ––––– //
 
 /**
  * Note model - maps to NOTES table

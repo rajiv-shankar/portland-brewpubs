@@ -1,8 +1,6 @@
 package com.brewpubs.app.models;
 
-/**
- * Created by Rajiv Shankar on 1/21/26 @ 3:05 PM.
- */
+// ––––– Created by Rajiv Shankar on 1/21/26 @ 3:05 PM ––––– //
 
 /**
  * File model - maps to FILES table
