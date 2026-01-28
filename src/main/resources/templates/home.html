@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"> <!-- Thymeleaf namespace declaration -->
 
-<head>
+<head> <!-- container for metadata about webpage -->
     <meta charset="UTF-8">
     <title>Portland Brewpubs</title>
     <style>
@@ -48,26 +48,32 @@
 
 <body>
 
+<!-- replace entire <nav> element with navbar fragment from fragments/nav.html -->
 <nav th:replace="~{fragments/nav :: navbar}"></nav>
 
 <div class="header">
     <!-- Thymeleaf: ${...} → replace HTML w attributes fr model (th:action, th:field, th:each, th:if) -->
-    <h1>🍺 <span th:text="${cityName}">City</span> Brewpubs Directory</h1> <!-- replace 'cityName' with value of 'cityName' from model -->
+    <!-- replace 'cityName' with value of 'cityName' from model -->
+    <h1>🍺 <span th:text="${cityName}">City</span> Brewpubs Directory</h1>
 </div>
 
 <div class="welcome">
 
+    <!-- HOMEPAGE CONTENT -->
+
     <div class="beer-icon">🍺</div>
-<!--    <h2>Welcome to-->
-<!--        <span th:text="${cityName}">City</span>,-->
-<!--        <span th:text="${stateName}">State</span>!-->
-<!--    </h2>-->
-<!--    <p>Your guide to the best breweries in town.</p>-->
+<!-- <h2>Welcome to
+        <span th:text="${cityName}">City</span>,
+        <span th:text="${stateName}">State</span>!
+    </h2>
+    <p>Your guide to the best breweries in town.</p> -->
 
     <!-- Show personalized greeting if authenticated -->
     <div th:if="${isAuthenticated}">
         <h2>Welcome back, <span th:text="${userFirstName}">User</span>!</h2>
-        <p>Your guide to the best breweries in <span th:text="${cityName}">City</span>, <span th:text="${stateName}">State</span>.</p>
+        <p>Your guide to the best breweries in
+            <span th:text="${cityName}">City</span>,
+            <span th:text="${stateName}">State</span>.</p>
     </div>
 
     <!-- Show generic greeting if anonymous -->
@@ -79,7 +85,6 @@
         <p>Your guide to the best breweries in town.</p>
         <p><a href="/register" style="color: #2c5f2d; font-weight: bold;">Register</a> to save your favorites!</p>
     </div>
-
 
     <div class="stats">
         <div class="number" th:text="${breweryCount}">0</div>
@@ -202,6 +207,93 @@
             </div>
         </div>
     </div>
+
+    <!-- FILES TAB SECTION -->
+    <div id="files" class="tab-pane fade" role="tabpanel">
+
+        <!-- Success/Error Messages -->
+        <div th:if="${fileSuccess}" style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+            <strong>✅ Success:</strong> <span th:text="${fileSuccess}">File uploaded successfully!</span>
+        </div>
+
+        <div th:if="${fileError}" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+            <strong>❌ Error:</strong> <span th:text="${fileError}">Upload failed!</span>
+        </div>
+
+        <!-- File Upload Form -->
+        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+            <h3 style="margin-top: 0;">📤 Upload New File</h3>
+            <form th:action="@{/files/upload}" method="POST" enctype="multipart/form-data" style="display: flex; gap: 15px; align-items: flex-end;">
+
+                <div style="flex: 1;">
+                    <label for="fileUpload" style="display: block; margin-bottom: 8px; font-weight: bold;">Choose File:</label>
+                    <input type="file" id="fileUpload" name="file" required
+                           style="width: 100%; padding: 10px; border: 2px solid #007bff; border-radius: 5px; background: white; cursor: pointer;">
+                </div>
+
+                <button type="submit"
+                        style="background-color: #007bff; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                    📤 Upload File
+                </button>
+            </form>
+            <small style="display: block; margin-top: 10px; color: #6c757d;">
+                Supported formats: PDF, images, documents, etc. (Max 5MB)
+            </small>
+        </div>
+
+        <!-- Files List -->
+        <div>
+            <h3>📁 My Files (<span th:text="${#lists.size(files)}">0</span>)</h3>
+
+            <!-- No files message -->
+            <div th:if="${#lists.isEmpty(files)}" style="background-color: #e9ecef; padding: 30px; border-radius: 10px; text-align: center; color: #6c757d;">
+                <p style="font-size: 1.2em; margin: 0;">📂 No files uploaded yet</p>
+                <p style="margin: 10px 0 0 0;">Upload your first file using the form above!</p>
+            </div>
+
+            <!-- Files table -->
+            <div th:if="${!#lists.isEmpty(files)}" style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden;">
+                    <thead>
+                    <tr style="background-color: #007bff; color: white;">
+                        <th style="padding: 15px; text-align: left; font-weight: bold;">📄 Filename</th>
+                        <th style="padding: 15px; text-align: center; font-weight: bold; width: 150px;">⚙️ Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="file, iterStat : ${files}"
+                        th:style="${iterStat.odd} ? 'background-color: #f8f9fa;' : 'background-color: white;'">
+
+                        <!-- Filename -->
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6;">
+                            <span th:text="${file.filename}" style="font-weight: 500;">report.pdf</span>
+                        </td>
+
+                        <!-- Actions -->
+                        <td style="padding: 15px; border-bottom: 1px solid #dee2e6; text-align: center;">
+                            <div style="display: flex; gap: 10px; justify-content: center;">
+                                <!-- Download Button -->
+                                <a th:href="@{/files/download/{id}(id=${file.fileId})}"
+                                   style="background-color: #28a745; color: white; padding: 8px 16px; border: none; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold;">
+                                    ⬇️ Download
+                                </a>
+
+                                <!-- Delete Button -->
+                                <a th:href="@{/files/delete/{id}(id=${file.fileId})}"
+                                   onclick="return confirm('Are you sure you want to delete this file?');"
+                                   style="background-color: #dc3545; color: white; padding: 8px 16px; border: none; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold;">
+                                    🗑️ Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <!-- END FILES SECTION -->
 
     <script>
         // Edit Note Modal Functions

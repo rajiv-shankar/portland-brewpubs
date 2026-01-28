@@ -36,13 +36,13 @@ public interface NoteMapper {
     @Insert("INSERT INTO NOTES (title, description, user_id) " +
             "VALUES (#{title}, #{description}, #{userId})")
     @Options(useGeneratedKeys = true, keyProperty = "noteId")
-    int insert(Note note);
+    int insert(Note note); // int return type indicates number of rows inserted (should be 1)
 
     // ========== READ OPERATIONS ==========
 
     /**
      * Get all notes for a specific user
-     * @param userId The user ID to filter by
+     * @param userId The user ID to filter [select] by
      * @return List of all notes belonging to this user
      *
      * USER ISOLATION: Only returns notes where user_id matches parameter
