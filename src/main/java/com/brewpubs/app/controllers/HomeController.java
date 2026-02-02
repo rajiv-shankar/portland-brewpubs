@@ -1,9 +1,11 @@
 package com.brewpubs.app.controllers;
 
+import com.brewpubs.app.models.Credential;
 import com.brewpubs.app.models.File;
 import com.brewpubs.app.models.Note;
 import com.brewpubs.app.models.User;
 import com.brewpubs.app.services.BreweryService;
+import com.brewpubs.app.services.CredentialService;
 import com.brewpubs.app.services.FileService;
 import com.brewpubs.app.services.NoteService;
 import com.brewpubs.app.services.UserService;
@@ -36,17 +38,20 @@ public class HomeController {
     private final UserService userService;
     private final NoteService noteService;
     private final FileService fileService;
+    private final CredentialService credentialService;
 
 
     // Constructor injection - Spring provides both services
     public HomeController(BreweryService breweryService,
                           UserService userService,
                           NoteService noteService,
-                          FileService fileService) {
+                          FileService fileService,
+                          CredentialService credentialService) {
         this.breweryService = breweryService;
         this.userService = userService;
         this.noteService = noteService;
         this.fileService = fileService;
+        this.credentialService = credentialService;
         System.out.println("✅ HomeController initialized with BreweryService, UserService, NoteService, FileService");
     }
 
@@ -112,6 +117,11 @@ public class HomeController {
             model.addAttribute("notes", new ArrayList<>());
             model.addAttribute("files", new ArrayList<>());
         }
+
+        // Load credentials for this user
+        List<Credential> credentials = credentialService.getCredentialsByUserId(user.getUserId());
+        model.addAttribute("credentials", credentials);
+        model.addAttribute("credential", new Credential()); // Empty for form
 
         // Add empty Note object for form binding
         model.addAttribute("note", new Note());
@@ -324,6 +334,87 @@ public class HomeController {
                     "Could not delete file.");
         }
         return "redirect:/";
+    }
+
+    @PostMapping("/credentials/create")
+    public String createCredential(@RequestParam("url") String url,
+                                   @RequestParam("username") String username,
+                                   @RequestParam("password") String password,
+                                   Principal principal,
+                                   RedirectAttributes redirectAttributes) {
+
+        User user = userService.getUser(principal.getName());
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("credentialError",
+                    "User not found. Please login again.");
+            return "redirect:/";
+        }
+
+        String result = credentialService.createCredential(url, username, password,
+                user.getUserId());
+
+        if (result.equals("success")) {
+            redirectAttributes.addFlashAttribute("credentialSuccess",
+                    "Credential added successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("credentialError",
+                    "Failed to add credential.");
+        }
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/credentials/update")
+    public String updateCredential(@RequestParam("credentialId") Integer credentialId,
+                                   @RequestParam("url") String url,
+                                   @RequestParam("username") String username,
+                                   @RequestParam("password") String password,
+                                   Principal principal,
+                                   RedirectAttributes redirectAttributes) {
+
+        User user = userService.getUser(principal.getName());
+        String result = credentialService.updateCredential(credentialId, url, username,
+                password, user.getUserId());
+
+        if (result.equals("success")) {
+            redirectAttributes.addFlashAttribute("credentialSuccess",
+                    "Credential updated successfully!");
+        } else if (result.equals("unauthorized")) {
+            redirectAttributes.addFlashAttribute("credentialError",
+                    "Unauthorized access.");
+        } else {
+            redirectAttributes.addFlashAttribute("credentialError",
+                    "Failed to update credential.");
+        }
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/credentials/delete/{credentialId}")
+    public String deleteCredential(@PathVariable Integer credentialId,
+                                   Principal principal,
+                                   RedirectAttributes redirectAttributes) {
+
+        User user = userService.getUser(principal.getName());
+        boolean deleted = credentialService.deleteCredential(credentialId, user.getUserId());
+
+        if (deleted) {
+            redirectAttributes.addFlashAttribute("credentialSuccess",
+                    "Credential deleted successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("credentialError",
+                    "Could not delete credential.");
+        }
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/credentials/edit/{credentialId}")
+    @ResponseBody
+    public Credential getCredentialForEdit(@PathVariable Integer credentialId,
+                                           Principal principal) {
+        User user = userService.getUser(principal.getName());
+        return credentialService.getCredentialWithDecryption(credentialId);
     }
 
 }

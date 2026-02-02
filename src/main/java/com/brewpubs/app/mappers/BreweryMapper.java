@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * BreweryMapper - MyBatis interface for BREWERIES table operations
+ * create an implementation of interface at runtime to interact with the database
  *
  * HOW IT WORKS:
  * 1. @Mapper tells MyBatis to implement this interface
@@ -16,7 +17,7 @@ import java.util.List;
  * 4. #{fieldName} placeholders are replaced with Java object values
  */
 
-@Mapper  // Tells Spring + MyBatis to create implementation
+@Mapper
 public interface BreweryMapper {
 
     // ========== READ OPERATIONS ==========
