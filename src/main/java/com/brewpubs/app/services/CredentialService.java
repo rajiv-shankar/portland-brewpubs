@@ -45,7 +45,8 @@ public class CredentialService {
     }
 
     /**
-     * Get single credential by ID (still encrypted)
+     * Get credential WITHOUT DECRYPTION by Id.
+     * Used for ownership verification before decrypting.
      */
     public Credential getCredentialById(Integer credentialId) {
         return credentialMapper.findById(credentialId);

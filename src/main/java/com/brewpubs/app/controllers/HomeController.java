@@ -15,7 +15,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,9 +31,9 @@ import java.util.List;
 // ––––– Created by Rajiv Shankar on 11/13/25 @ 8:06 PM ––––– //
 
 /**
- * Controller: receives & processes incoming HTTP requests | returns appropriate views (HTML pages) to users |
- * key component in Spring's Model-View-Controller (MVC) architectural pattern |
- * Home-Controller manages requests to home-page
+ * Controller: receives & processes incoming HTTP requests | returns appropriate views (HTML pages) to users | key
+ * component in Spring's Model-View-Controller (MVC) architectural pattern | Home-Controller manages requests to
+ * home-page
  */
 @Controller
 public class HomeController {
@@ -57,16 +62,12 @@ public class HomeController {
 
     /**
      * GET / - Homepage
-     *
-     * NEW: Principal parameter
-     * - If user is logged in, Principal is NOT null → principal.getName() returns username
-     * - If user is anonymous, Principal IS null → show generic greeting
-     *
-     * FLOW:
-     * 1. Check if Principal is null (anonymous user)
-     * 2. If logged in, fetch User from database by username
-     * 3. Add firstName to model for personalized greeting
-     * 4. Template uses th:if to show appropriate message
+     * <p>
+     * NEW: Principal parameter - If user is logged in, Principal is NOT null → principal.getName() returns username -
+     * If user is anonymous, Principal IS null → show generic greeting
+     * <p>
+     * FLOW: 1. Check if Principal is null (anonymous user) 2. If logged in, fetch User from database by username 3. Add
+     * firstName to model for personalized greeting 4. Template uses th:if to show appropriate message
      */
     @GetMapping("/")
     public String home(Model model, Principal principal) {
@@ -98,7 +99,7 @@ public class HomeController {
             model.addAttribute("isAuthenticated", false);
         }
 
-        // Load user's notes and files
+        // Load user's notes, files, credentials
         if (user != null) {  // ← Check user, not principal
 
             // Load notes
@@ -109,21 +110,22 @@ public class HomeController {
             List<File> files = fileService.getFilesByUserId(user.getUserId());
             model.addAttribute("files", files);
 
-            System.out.println("📋 Loaded " + notes.size() + " notes for user " + user.getUsername());
-            System.out.println("📁 Loaded " + files.size() + " files for user " + user.getUsername());
+            // Load credentials (list of existing credentials)
+            List<Credential> credentials = credentialService.getCredentialsByUserId(user.getUserId());
+            model.addAttribute("credentials", credentials);
 
+            System.out.println("📋 Loaded " + notes.size() + " notes for user " + user.getUsername());
+            System.out.println("📂 Loaded " + files.size() + " files for user " + user.getUsername());
+            System.out.println("🔐 Loaded " + credentials.size() + " credentials for user " + user.getUsername());
         } else {
             // Anonymous user - empty lists
             model.addAttribute("notes", new ArrayList<>());
             model.addAttribute("files", new ArrayList<>());
+            model.addAttribute("credentials", new ArrayList<>());
         }
 
-        // Load credentials for this user
-        List<Credential> credentials = credentialService.getCredentialsByUserId(user.getUserId());
-        model.addAttribute("credentials", credentials);
-        model.addAttribute("credential", new Credential()); // Empty for form
-
-        // Add empty Note object for form binding
+        // needed for form binding + empty model objects
+        model.addAttribute("credential", new Credential());  // empty object for the CREATE form
         model.addAttribute("note", new Note());
 
         return "home";
@@ -133,14 +135,10 @@ public class HomeController {
 
     /**
      * POST /notes - CREATE new note
-     *
-     * FLOW:
-     * 1. User submits form (title + description)
-     * 2. Spring binds form data to Note object via @ModelAttribute
-     * 3. Get logged-in user from Principal
-     * 4. Set note's userId to logged-in user's ID
-     * 5. Save note to database via NoteService
-     * 6. Redirect back to home page (which will reload notes list)
+     * <p>
+     * FLOW: 1. User submits form (title + description) 2. Spring binds form data to Note object via @ModelAttribute 3.
+     * Get logged-in user from Principal 4. Set note's userId to logged-in user's ID 5. Save note to database via
+     * NoteService 6. Redirect back to home page (which will reload notes list)
      */
     @PostMapping("/notes")
     public String createNote(
@@ -175,10 +173,9 @@ public class HomeController {
 
     /**
      * POST /notes/update - UPDATE existing note
-     *
-     * SECURITY:
-     * - Verify logged-in user owns the note before updating
-     * - Don't allow changing userId (prevents note theft)
+     * <p>
+     * SECURITY: - Verify logged-in user owns the note before updating - Don't allow changing userId (prevents note
+     * theft)
      */
     @PostMapping("/notes/update")
     public String updateNote(@ModelAttribute Note note, Principal principal, RedirectAttributes redirectAttributes) {
@@ -219,13 +216,10 @@ public class HomeController {
 
     /**
      * GET /notes/delete/{id} - DELETE note by ID
-     *
-     * SECURITY:
-     * - Verify logged-in user owns the note before deleting
-     *
-     * PATH VARIABLE:
-     * - {id} in URL becomes method parameter
-     * - Example: GET /notes/delete/5 → deleteNote(5, ...)
+     * <p>
+     * SECURITY: - Verify logged-in user owns the note before deleting
+     * <p>
+     * PATH VARIABLE: - {id} in URL becomes method parameter - Example: GET /notes/delete/5 → deleteNote(5, ...)
      */
     @GetMapping("/notes/delete/{id}")
     public String deleteNote(@PathVariable Integer id, Principal principal, RedirectAttributes redirectAttributes) {
@@ -411,10 +405,29 @@ public class HomeController {
 
     @GetMapping("/credentials/edit/{credentialId}")
     @ResponseBody
-    public Credential getCredentialForEdit(@PathVariable Integer credentialId,
-                                           Principal principal) {
+    public ResponseEntity<Credential> getCredentialForEdit(
+            @PathVariable Integer credentialId,
+            Principal principal) {
+
         User user = userService.getUser(principal.getName());
-        return credentialService.getCredentialWithDecryption(credentialId);
+        if (user == null) {
+            return ResponseEntity.status(403).build();  // Not authenticated
+        }
+
+        // First, fetch the credential WITHOUT decryption to check ownership
+        Credential credential = credentialService.getCredentialById(credentialId);
+
+        // Security: Does this credential belong to the logged-in user?
+        if (credential == null || !credential.getUserId().equals(user.getUserId())) {
+            System.out.println("🚨 SECURITY: User " + user.getUsername() +
+                    " tried to access credential " + credentialId + " (not theirs!)");
+            return ResponseEntity.status(403).build();  // Forbidden
+        }
+
+        // Ownership verified — safe to decrypt
+        Credential decrypted = credentialService.getCredentialWithDecryption(credentialId);
+        return ResponseEntity.ok(decrypted);
     }
+
 
 }

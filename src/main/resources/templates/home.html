@@ -53,7 +53,7 @@
 
 <div class="header">
     <!-- Thymeleaf: ${...} → replace HTML w attributes fr model (th:action, th:field, th:each, th:if) -->
-    <!-- replace 'cityName' with value of 'cityName' from model -->
+    <!-- replace 'cityName' with value of 'cityName' from model  =>  header shows '🍺 Portland Brewpubs Directory'  -->
     <h1>🍺 <span th:text="${cityName}">City</span> Brewpubs Directory</h1>
 </div>
 
@@ -62,21 +62,8 @@
     <!-- HOMEPAGE CONTENT -->
 
     <div class="beer-icon">🍺</div>
-    <!-- <h2>Welcome to
-        <span th:text="${cityName}">City</span>,
-        <span th:text="${stateName}">State</span>!
-    </h2>
-    <p>Your guide to the best breweries in town.</p> -->
 
-    <!-- Show personalized greeting if authenticated -->
-    <div th:if="${isAuthenticated}">
-        <h2>Welcome back, <span th:text="${userFirstName}">User</span>!</h2>
-        <p>Your guide to the best breweries in
-            <span th:text="${cityName}">City</span>,
-            <span th:text="${stateName}">State</span>.</p>
-    </div>
-
-    <!-- Show generic greeting if anonymous -->
+    <!-- Show generic greeting if anonymous / when website first loaded -->
     <div th:unless="${isAuthenticated}">
         <h2>Welcome to
             <span th:text="${cityName}">City</span>,
@@ -84,6 +71,14 @@
         </h2>
         <p>Your guide to the best breweries in town.</p>
         <p><a href="/register" style="color: #2c5f2d; font-weight: bold;">Register</a> to save your favorites!</p>
+    </div>
+
+    <!-- Show personalized greeting if authenticated -->
+    <div th:if="${isAuthenticated}">
+        <h2>Welcome back, <span th:text="${userFirstName}">User</span>!</h2>
+        <p>Your guide to the best breweries in
+            <span th:text="${cityName}">City</span>,
+            <span th:text="${stateName}">State</span>.</p>
     </div>
 
     <div class="stats">
@@ -196,7 +191,9 @@
                     </div>
 
                     <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                        <button type="button" onclick="closeEditModal()" style="background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                        <button type="button"
+                                onclick="closeNoteModal()"
+                                style="background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
                             Cancel
                         </button>
                         <button type="submit" style="background-color: #2c5f2d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
@@ -437,10 +434,12 @@
 
     <!-- Edit Credential Modal -->
     <div id="editCredentialModal"
+         onclick="closeCredentialModal()"
          style="display: none; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);
             z-index: 1000; justify-content: center; align-items: center;">
-        <div style="background: white; padding: 30px; border-radius: 10px;
+        <div onclick="event.stopPropagation()"
+             style="background: white; padding: 30px; border-radius: 10px;
                 width: 90%; max-width: 500px; position: relative;">
             <h2 style="margin-top: 0; color: #2c5f2d;">Edit Credential</h2>
 
@@ -488,7 +487,7 @@
 
                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
                     <button type="button"
-                            onclick="closeEditModal()"
+                            onclick="closeCredentialModal()"
                             style="background-color: #6c757d; color: white;
                                padding: 10px 20px; border: none;
                                border-radius: 5px; cursor: pointer;">
@@ -528,13 +527,16 @@
                 });
         }
 
-        function closeEditModal() {
-            document.getElementById('editCredentialModal').style.display = 'none';
-        }
+        // function closeCredentialModal() {
+        //     document.getElementById('editCredentialModal').style.display = 'none';
+        // }
 
-        document.getElementById('editCredentialModal').addEventListener('click', function(e) {
-            if (e.target === this) closeEditModal();
-        });
+        function closeCredentialModal() {
+            console.log("closeCredentialModal called!");
+            console.log("Current display:", document.getElementById('editCredentialModal').style.display);
+            document.getElementById('editCredentialModal').style.display = 'none';
+            console.log("After setting to none:", document.getElementById('editCredentialModal').style.display);
+        }
     </script>
 
     <script>
@@ -551,14 +553,14 @@
             document.getElementById('editModal').style.display = 'block';
         }
 
-        function closeEditModal() {
+        function closeNoteModal() {
             document.getElementById('editModal').style.display = 'none';
         }
 
         // Close modal when clicking outside
         document.getElementById('editModal').addEventListener('click', function(e) {
             if (e.target === this) {
-                closeEditModal();
+                closeNoteModal();
             }
         });
     </script>
